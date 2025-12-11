@@ -1,9 +1,6 @@
 bundle:
   name: next-js-demo-app-v1
 
-include:
-  - resources/*.yml
-
 targets:
   dev:
     mode: development
@@ -22,3 +19,13 @@ targets:
     permissions:
       - user_name: ${workspace.current_user.userName}
         level: CAN_MANAGE
+
+resources:
+  apps:
+    hello-world-app:
+      name: hello-world-app
+      description: "A Hello World Next.js App"
+      source_code_path: .
+      command: ["npm", "run", "build-start"]
+      env:
+        NODE_ENV: production
