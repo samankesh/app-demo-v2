@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react';
 
 export default function Home() {
   const [time, setTime] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [data, setData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -13,7 +14,6 @@ export default function Home() {
       .then((res) => res.json())
       .then((data) => setTime(data.time));
 
-    setLoading(true);
     fetch('/api/data')
       .then((res) => res.json())
       .then((data) => {
@@ -23,7 +23,7 @@ export default function Home() {
           setData(data.data);
         }
       })
-      .catch((err) => setError('Failed to load data'))
+      .catch(() => setError('Failed to load data'))
       .finally(() => setLoading(false));
   }, []);
 
@@ -54,7 +54,7 @@ export default function Home() {
               <tbody>
                 {data.map((row, i) => (
                   <tr key={i} className="border-b dark:border-gray-700">
-                    {Object.values(row).map((val: any, j) => (
+                    {Object.values(row).map((val: unknown, j) => (
                       <td key={j} className="px-6 py-4">
                         {typeof val === 'object' ? JSON.stringify(val) : String(val)}
                       </td>

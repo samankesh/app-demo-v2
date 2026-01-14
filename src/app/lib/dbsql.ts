@@ -4,15 +4,17 @@ function getHttpPathFromId(warehouseId: string) {
   return `/sql/1.0/warehouses/${warehouseId}`;
 }
 
-export async function queryWithAppSP(sql: string, params?: any[]) {
-  const host = process.env.DATABRICKS_HOST?.replace(/^https?:\/\//, '')!;
+export async function queryWithAppSP(sql: string, params?: unknown[]) {
+  const host = process.env.DATABRICKS_HOST?.replace(/^https?:\/\//, '');
   
   const warehouseId = process.env.SQL_WAREHOUSE_ID;
   const clientId = process.env.DATABRICKS_CLIENT_ID;
   const clientSecret = process.env.DATABRICKS_CLIENT_SECRET;
   
-  const httpPath = getHttpPathFromId(warehouseId!);
-
+  if (!host) {
+    throw new Error("Missing DATABRICKS_HOST environment variable.");
+  }
+  
   if (!clientId || !clientSecret) {
     throw new Error("Missing DATABRICKS_CLIENT_ID or DATABRICKS_CLIENT_SECRET environment variables.");
   }
@@ -20,8 +22,11 @@ export async function queryWithAppSP(sql: string, params?: any[]) {
     throw new Error("Missing SQL_WAREHOUSE_ID environment variables.");
   }
 
+  const httpPath = getHttpPathFromId(warehouseId);
+
   const client = new DBSQLClient();
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const connectOptions: any = {
     host,
     path: httpPath,
