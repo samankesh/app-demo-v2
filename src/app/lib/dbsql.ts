@@ -50,7 +50,7 @@ async function getClient() {
   }
 }
 
-export async function queryWithAppSP(sql: string, params?: unknown[], retryCount = 0): Promise<any[]> {
+export async function queryWithAppSP(sql: string, params?: unknown[], retryCount = 0): Promise<unknown[]> {
   try {
     const client = await getClient();
     const session = await client.openSession();
