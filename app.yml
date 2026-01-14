@@ -1,0 +1,8 @@
+command:
+  - npm
+  - run
+  - start
+
+env:
+  - name: SQL_WAREHOUSE_ID
+    valueFrom: "SQL_WAREHOUSE"
